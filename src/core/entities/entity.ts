@@ -8,8 +8,8 @@ export class Entity<Params> {
         return this._id
     }
 
-    constructor (params: Params, id?: string) {
+    protected constructor (params: Params, id?: UniqueEntityId) {
         this.params = params
-        this._id = new UniqueEntityId(id)
+        this._id = id ?? new UniqueEntityId()
     }
 }
