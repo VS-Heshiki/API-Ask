@@ -1,4 +1,4 @@
-import { Entity } from '@/core/entities'
+import { Entity, UniqueEntityId } from '@/core/entities'
 
 export class Answer extends Entity<AnswerInput>{
     get content () {
@@ -7,7 +7,9 @@ export class Answer extends Entity<AnswerInput>{
 }
 
 export type AnswerInput = {
+    authorId: UniqueEntityId
+    questionId: UniqueEntityId
     content: string
-    authorId: string
-    questionId: string
+    createdAt: Date
+    updatedAt?: Date
 }
