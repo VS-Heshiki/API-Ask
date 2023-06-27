@@ -1,7 +1,6 @@
 import { AnswerRepository } from '@/domain/repositories'
 import { AnswerQuestion } from '@/domain/services'
 
-import { beforeEach, describe, expect, it } from 'vitest'
 import { MockProxy, mock } from 'vitest-mock-extended'
 
 describe('AnswerQuestion Service', () => {
