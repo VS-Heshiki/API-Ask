@@ -1,11 +1,8 @@
-import { randomUUID } from 'node:crypto'
+import { Entity } from '@/core/entities'
 
-export class Student {
-    public name: string
-    public id: string
+export class Student extends Entity<StudentInput>{
+}
 
-    constructor (name: string, id?: string) {
-        this.name = name
-        this.id = id ?? randomUUID()
-    }
+export type StudentInput = {
+    name: string
 }
