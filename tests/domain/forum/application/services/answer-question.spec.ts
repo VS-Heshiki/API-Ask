@@ -1,24 +1,25 @@
 import { AnswerRepository } from '@/domain/forum/application/repositories'
-import { AnswerQuestion } from '@/domain/forum/application/services'
+import { AnswerQuestionService } from '@/domain/forum/application/services'
 
 import { MockProxy, mock } from 'vitest-mock-extended'
 
 describe('AnswerQuestion Service', () => {
-    let sut: AnswerQuestion
+    let sut: AnswerQuestionService
     let answerRepositoryMock: MockProxy<AnswerRepository>
 
     beforeEach(() => {
         answerRepositoryMock = mock()
-        sut = new AnswerQuestion(answerRepositoryMock)
+        sut = new AnswerQuestionService(answerRepositoryMock)
     })
 
     it('should create an answer', async () => {
-        const response = await sut.execute({
+        const { answer } = await sut.execute({
             instructorId: '1',
             questionId: '1',
             content: 'new answer'
         })
 
-        expect(response.content).toBe('new answer')
+        expect(answer.id).toBeTruthy()
+        expect(answer.content).toBe('new answer')
     })
 })

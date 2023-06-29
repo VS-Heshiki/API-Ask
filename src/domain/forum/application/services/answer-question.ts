@@ -8,11 +8,15 @@ export type AnswerQuestionInput = {
     content: string
 }
 
-export class AnswerQuestion {
+export type AnswerQuestionOutput = {
+    answer: Answer
+}
+
+export class AnswerQuestionService {
 
     constructor (private readonly answerRepository: AnswerRepository) { }
 
-    async execute ({ instructorId, questionId, content }: AnswerQuestionInput): Promise<Answer> {
+    async execute ({ instructorId, questionId, content }: AnswerQuestionInput): Promise<AnswerQuestionOutput> {
         const answer = Answer.create({
             content,
             authorId: new UniqueEntityId(instructorId),
@@ -21,6 +25,6 @@ export class AnswerQuestion {
 
         await this.answerRepository.create(answer)
 
-        return answer
+        return { answer }
     }
 }
