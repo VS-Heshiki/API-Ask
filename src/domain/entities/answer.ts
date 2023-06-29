@@ -14,6 +14,11 @@ export class Answer extends Entity<AnswerInput>{
         return this.params.content
     }
 
+    set content (content: string) {
+        this.content = content
+        this.refresh()
+    }
+
     get excerpt () {
         return this.content
             .substring(0, 120)
@@ -23,11 +28,6 @@ export class Answer extends Entity<AnswerInput>{
 
     private refresh () {
         this.params.updatedAt = new Date()
-    }
-
-    set content (content: string) {
-        this.content = content
-        this.refresh()
     }
 
     static create (params: Optional<AnswerInput, 'createdAt'>, id?: UniqueEntityId): Answer {

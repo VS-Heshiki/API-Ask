@@ -1,7 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 export class Entity<Params> {
-    private _id: UniqueEntityId
+    private readonly _id: UniqueEntityId
     protected params: Params
 
     get id () {

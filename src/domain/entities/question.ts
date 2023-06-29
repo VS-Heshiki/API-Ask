@@ -11,12 +11,28 @@ export class Question extends Entity<QuestionInput> {
         return this.params.bestAnswerId
     }
 
+    set bestAnswerId (bestAnswerId: UniqueEntityId | undefined) {
+        this.params.bestAnswerId = bestAnswerId
+        this.refresh()
+    }
+
     get title () {
         return this.params.title
     }
 
+    set title (title: string) {
+        this.params.title = title
+        this.params.slug = Slug.createFromText(title)
+        this.refresh()
+    }
+
     get content () {
         return this.params.content
+    }
+
+    set content (content: string) {
+        this.params.content = content
+        this.refresh()
     }
 
     get slug () {
@@ -32,22 +48,6 @@ export class Question extends Entity<QuestionInput> {
 
     private refresh () {
         this.params.updatedAt = new Date()
-    }
-
-    set bestAnswerId (bestAnswerId: UniqueEntityId | undefined) {
-        this.params.bestAnswerId = bestAnswerId
-        this.refresh()
-    }
-
-    set content (content: string) {
-        this.params.content = content
-        this.refresh()
-    }
-
-    set title (title: string) {
-        this.params.title = title
-        this.params.slug = Slug.createFromText(title)
-        this.refresh()
     }
 
     static create (params: Optional<QuestionInput, 'createdAt' | 'slug'>, id?: UniqueEntityId): Question {
