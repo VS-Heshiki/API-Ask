@@ -1,4 +1,4 @@
-import { Slug } from '@/domain/entities/value-objects'
+import { Slug } from '@/domain/forum/enterprise/entities/value-objects'
 
 describe('Slug ValueObject', () => {
     it('should create a new slug from text', () => {

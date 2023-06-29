@@ -1,6 +1,6 @@
+import { AnswerRepository } from '@/domain/forum/application/repositories'
+import { Answer } from '@/domain/forum/enterprise/entities'
 import { UniqueEntityId } from '@/core/entities'
-import { Answer } from '@/domain/entities'
-import { AnswerRepository } from '@/domain/repositories'
 
 export type AnswerQuestionInput = {
     instructorId: string

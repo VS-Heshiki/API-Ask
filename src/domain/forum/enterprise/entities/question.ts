@@ -1,6 +1,6 @@
 import { Entity, UniqueEntityId } from '@/core/entities'
 import { Optional } from '@/core/types'
-import { Slug } from '@/domain/entities/value-objects'
+import { Slug } from '@/domain/forum/enterprise/entities/value-objects'
 
 export class Question extends Entity<QuestionInput> {
     get authorId () {

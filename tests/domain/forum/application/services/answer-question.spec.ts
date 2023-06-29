@@ -1,5 +1,5 @@
-import { AnswerRepository } from '@/domain/repositories'
-import { AnswerQuestion } from '@/domain/services'
+import { AnswerRepository } from '@/domain/forum/application/repositories'
+import { AnswerQuestion } from '@/domain/forum/application/services'
 
 import { MockProxy, mock } from 'vitest-mock-extended'
 
