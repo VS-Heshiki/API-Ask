@@ -1,22 +1,25 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "baseUrl": "src",
-    "moduleResolution": "node",
-    "paths": {
-      "@/*": [
-        "*"
-      ]
-    },
-    "sourceMap": true,
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "types": [
-      "vitest/globals"
-    ]
-  }
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "baseUrl": "src",
+        "moduleResolution": "node",
+        "paths": {
+            "@/tests/*": [
+                "../tests/*"
+            ],
+            "@/*": [
+                "*"
+            ]
+        },
+        "sourceMap": true,
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "types": [
+            "vitest/globals"
+        ]
+    }
 }

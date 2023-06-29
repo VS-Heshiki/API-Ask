@@ -2,13 +2,13 @@ import { QuestionRepository } from '@/domain/forum/application/repositories'
 import { Question } from '@/domain/forum/enterprise/entities'
 import { UniqueEntityId } from '@/core/entities'
 
-export type CreateQuestionInput = {
+type CreateQuestionInput = {
     authorId: string
     title: string
     content: string
 }
 
-export type CreateQuestionOutput = {
+type CreateQuestionOutput = {
     question: Question
 }
 

@@ -2,13 +2,13 @@ import { AnswerRepository } from '@/domain/forum/application/repositories'
 import { Answer } from '@/domain/forum/enterprise/entities'
 import { UniqueEntityId } from '@/core/entities'
 
-export type AnswerQuestionInput = {
+type AnswerQuestionInput = {
     instructorId: string
     questionId: string
     content: string
 }
 
-export type AnswerQuestionOutput = {
+type AnswerQuestionOutput = {
     answer: Answer
 }
 
