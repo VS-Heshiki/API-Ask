@@ -5,7 +5,7 @@ import { faker } from '@faker-js/faker'
 
 export const createQuestion = (override: Partial<QuestionInput> = {}, id?: UniqueEntityId): Question => {
     const newQuestion = Question.create({
-        authorId: new UniqueEntityId('1'),
+        authorId: new UniqueEntityId(),
         title: faker.lorem.paragraph(5),
         content: faker.lorem.text(),
         ...override
