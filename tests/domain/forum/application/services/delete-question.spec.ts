@@ -26,4 +26,13 @@ describe('DeleteQuestion Service', () => {
         expect(questionRepositoryStub.items).toHaveLength(0)
         expect(deleteSpy).toHaveBeenCalledWith('question-1')
     })
+
+    it('should avoid delete a question from another user', async () => {
+        await expect(
+            sut.execute({
+                authorId: 'author-2',
+                questionId: 'question-1'
+            })
+        ).rejects.toBeInstanceOf(Error)
+    })
 })
