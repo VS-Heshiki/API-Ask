@@ -1,4 +1,3 @@
-import { UniqueEntityId } from '@/core/entities'
 import { QuestionRepository } from '@/domain/forum/application/repositories'
 
 type DeleteQuestionInput = {
@@ -19,7 +18,7 @@ export class DeleteQuestionService {
             throw new Error('Question not Found')
         }
 
-        if (question.authorId !== new UniqueEntityId(authorId)) {
+        if (question.authorId.toString !== authorId) {
             throw new Error('Not Allowed')
         }
 

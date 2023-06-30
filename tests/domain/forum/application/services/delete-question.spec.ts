@@ -1,37 +1,29 @@
 import { DeleteQuestionService } from '@/domain/forum/application/services'
-import { QuestionRepository } from '@/domain/forum/application/repositories'
-import { Question } from '@/domain/forum/enterprise/entities'
-import { createQuestion } from '@/tests/mock'
 import { UniqueEntityId } from '@/core/entities'
-
-import { MockProxy, mock } from 'vitest-mock-extended'
+import { createQuestion } from '@/tests/mock'
+import { QuestionRepositoryStub } from '@/tests/mock'
 
 describe('DeleteQuestion Service', () => {
     let sut: DeleteQuestionService
-    let questionRepositoryMock: MockProxy<QuestionRepository>
-    let newQuestion: Question
+    let questionRepositoryStub: QuestionRepositoryStub
 
-    beforeEach(() => {
-        questionRepositoryMock = mock()
-        newQuestion = createQuestion({ authorId: new UniqueEntityId('author-1') }, new UniqueEntityId('question-1'))
-        sut = new DeleteQuestionService(questionRepositoryMock)
+    beforeEach(async () => {
+        questionRepositoryStub = new QuestionRepositoryStub
+        sut = new DeleteQuestionService(questionRepositoryStub)
+
+        const newQuestion = createQuestion({ authorId: new UniqueEntityId('author-1') }, new UniqueEntityId('question-1'))
+        await questionRepositoryStub.create(newQuestion)
     })
 
-    it.todo('should call Service with correct values', async () => {
-        // await sut.execute({
-        //     authorId: newQuestion.authorId.toString,
-        //     questionId: newQuestion.id.toString
-        // })
+    it('should call Service with correct values', async () => {
+        const deleteSpy = vitest.spyOn(questionRepositoryStub, 'delete')
 
-        // expect(sut.execute).toHaveBeenCalledWith({ authorId: 'author-1', questionId: 'question-1' })
-    })
+        await sut.execute({
+            authorId: 'author-1',
+            questionId: 'question-1'
+        })
 
-    it('should avoid delete a question from another user ', async () => {
-        await expect(
-            sut.execute({
-                authorId: 'author-2',
-                questionId: newQuestion.id.toString
-            })
-        ).rejects.toBeInstanceOf(Error)
+        expect(questionRepositoryStub.items).toHaveLength(0)
+        expect(deleteSpy).toHaveBeenCalledWith('question-1')
     })
 })
