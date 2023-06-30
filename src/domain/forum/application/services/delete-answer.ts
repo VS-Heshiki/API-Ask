@@ -1,4 +1,3 @@
-import { UniqueEntityId } from '@/core/entities'
 import { AnswerRepository } from '@/domain/forum/application/repositories'
 
 type DeleteAnswerInput = {
