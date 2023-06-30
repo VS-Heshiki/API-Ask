@@ -19,7 +19,7 @@ export class DeleteAnswerService {
             throw new Error('Answer not Found')
         }
 
-        if (answer.authorId !== new UniqueEntityId(authorId)) {
+        if (authorId !== answer.authorId.toString) {
             throw new Error('Not Allowed')
         }
 

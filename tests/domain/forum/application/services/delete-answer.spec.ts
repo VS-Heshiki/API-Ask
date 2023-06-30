@@ -1,37 +1,31 @@
-import { DeleteAnswerService } from '@/domain/forum/application/services'
-import { AnswerRepository } from '@/domain/forum/application/repositories'
-import { Answer } from '@/domain/forum/enterprise/entities'
-import { createAnswer } from '@/tests/mock'
 import { UniqueEntityId } from '@/core/entities'
+import { AnswerRepository } from '@/domain/forum/application/repositories'
+import { DeleteAnswerService } from '@/domain/forum/application/services'
+import { Answer, Question } from '@/domain/forum/enterprise/entities'
+import { AnswerRepositoryStub, createAnswer, createQuestion } from '@/tests/mock'
 
-import { MockProxy, mock } from 'vitest-mock-extended'
 
 describe('DeleteAnswer Service', () => {
     let sut: DeleteAnswerService
-    let answerRepositoryMock: MockProxy<AnswerRepository>
-    let newAnswer: Answer
+    let answerRepositoryStub: AnswerRepositoryStub
 
-    beforeEach(() => {
-        answerRepositoryMock = mock()
-        newAnswer = createAnswer({ authorId: new UniqueEntityId('author-1') }, new UniqueEntityId('answer-1'))
-        sut = new DeleteAnswerService(answerRepositoryMock)
+    beforeEach(async () => {
+        answerRepositoryStub = new AnswerRepositoryStub()
+        sut = new DeleteAnswerService(answerRepositoryStub)
+
+        const newAnswer = createAnswer({ authorId: new UniqueEntityId('author-1') }, new UniqueEntityId('answer-1'))
+        await answerRepositoryStub.create(newAnswer)
     })
 
-    it.todo('should call Service with correct values', async () => {
-        // await sut.execute({
-        //     authorId: newAnswer.authorId.toString,
-        //     answerId: newAnswer.id.toString
-        // })
+    it('should call Service with correct values', async () => {
+        const spyDelete = vitest.spyOn(answerRepositoryStub, 'delete')
 
-        // expect(sut.execute).toHaveBeenCalledWith({ authorId: 'author-1', answerId: 'answer-1' })
-    })
+        await sut.execute({
+            authorId: 'author-1',
+            answerId: 'answer-1'
+        })
 
-    it('should avoid delete a answer from another user ', async () => {
-        await expect(
-            sut.execute({
-                authorId: 'author-2',
-                answerId: newAnswer.id.toString
-            })
-        ).rejects.toBeInstanceOf(Error)
+        expect(answerRepositoryStub.items).toHaveLength(0)
+        expect(spyDelete).toHaveBeenCalledWith('answer-1')
     })
 })
