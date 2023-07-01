@@ -15,7 +15,7 @@ export class Answer extends Entity<AnswerInput>{
     }
 
     set content (content: string) {
-        this.content = content
+        this.params.content = content
         this.refresh()
     }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AnswerRepository } from '@/domain/forum/application/repositories'
 import { Answer } from '@/domain/forum/enterprise/entities'
 
@@ -22,5 +23,11 @@ export class AnswerRepositoryStub implements AnswerRepository {
         }
 
         return answer
+    }
+
+    async edit (params: AnswerRepository.Edit): Promise<void> {
+        const answer = this.items.find(item => item.id.toString === params.answerId)
+
+        answer!.content = params.content
     }
 }

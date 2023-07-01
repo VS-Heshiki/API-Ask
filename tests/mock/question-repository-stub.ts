@@ -30,7 +30,7 @@ export class QuestionRepositoryStub implements QuestionRepository {
         this.items.splice(questionIndex, 1)
     }
 
-    async edit (params: QuestionRepository.edit): Promise<void> {
+    async edit (params: QuestionRepository.Edit): Promise<void> {
         const answer = this.items.find(item => item.id.toString === params.questionId)
 
         answer!.title = params.title
