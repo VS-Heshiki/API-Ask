@@ -32,4 +32,13 @@ describe('BestAnswerOfQuestion Service', () => {
         expect(questionRepositoryStub.items[0].bestAnswerId).toEqual(newAnswer.id)
         expect(saveSpy).toHaveBeenCalledWith(expect.any(Question))
     })
+
+    it('should avoid set an answer from another user', async () => {
+        await expect(
+            sut.execute({
+                authorId: 'invalid-author',
+                answerId: newAnswer.id.toString
+            })
+        ).rejects.toBeInstanceOf(Error)
+    })
 })
