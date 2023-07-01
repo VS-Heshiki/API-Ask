@@ -36,4 +36,15 @@ describe('EditQuestion Service', () => {
             content: 'Any Content'
         })
     })
+
+    it('should avoid edit a question from another user', async () => {
+        await expect(
+            sut.execute({
+                authorId: 'author-2',
+                questionId: 'question-1',
+                title: 'Any Title',
+                content: 'Any Content'
+            })
+        ).rejects.toBeInstanceOf(Error)
+    })
 })
