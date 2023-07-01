@@ -25,9 +25,9 @@ export class AnswerRepositoryStub implements AnswerRepository {
         return answer
     }
 
-    async edit (params: AnswerRepository.Edit): Promise<void> {
-        const answer = this.items.find(item => item.id.toString === params.answerId)
+    async save (answer: Answer): Promise<void> {
+        const answerIndex = this.items.findIndex(item => item.id === answer.id)
 
-        answer!.content = params.content
+        this.items[answerIndex] = answer
     }
 }

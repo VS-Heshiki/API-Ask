@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { UniqueEntityId } from '@/core/entities'
 import { QuestionRepository } from '@/domain/forum/application/repositories'
 import { Question } from '@/domain/forum/enterprise/entities'
 
@@ -30,10 +31,9 @@ export class QuestionRepositoryStub implements QuestionRepository {
         this.items.splice(questionIndex, 1)
     }
 
-    async edit (params: QuestionRepository.Edit): Promise<void> {
-        const answer = this.items.find(item => item.id.toString === params.questionId)
+    async save (question: Question): Promise<void> {
+        const questionIndex = this.items.findIndex(item => item.id === question.id)
 
-        answer!.title = params.title
-        answer!.content = params.content
+        this.items[questionIndex] = question
     }
 }

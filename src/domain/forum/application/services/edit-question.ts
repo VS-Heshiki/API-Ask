@@ -24,6 +24,9 @@ export class EditQuestionService {
             throw new Error('Not Allowed')
         }
 
-        await this.questionRepository.edit({ questionId, title, content })
+        question.title = title
+        question.content = content
+
+        await this.questionRepository.save(question)
     }
 }

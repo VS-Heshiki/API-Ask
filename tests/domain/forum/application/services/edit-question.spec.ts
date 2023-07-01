@@ -1,6 +1,7 @@
 import { EditQuestionService } from '@/domain/forum/application/services'
 import { UniqueEntityId } from '@/core/entities'
 import { QuestionRepositoryStub, createQuestion } from '@/tests/mock'
+import { Question } from '@/domain/forum/enterprise/entities'
 
 describe('EditQuestion Service', () => {
     let sut: EditQuestionService
@@ -14,8 +15,8 @@ describe('EditQuestion Service', () => {
         await questionRepositoryStub.create(newQuestion)
     })
 
-    it('should call Service with correct values', async () => {
-        const editSpy = vitest.spyOn(questionRepositoryStub, 'edit')
+    it('should be able edit a question', async () => {
+        const saveSpy = vitest.spyOn(questionRepositoryStub, 'save')
 
         await sut.execute({
             authorId: 'author-1',
@@ -24,17 +25,11 @@ describe('EditQuestion Service', () => {
             content: 'Any Content'
         })
 
-        expect(questionRepositoryStub.items[0]).toEqual(
-            expect.objectContaining({
-                title: 'Any Title',
-                content: 'Any Content'
-            })
-        )
-        expect(editSpy).toHaveBeenCalledWith({
-            questionId: 'question-1',
+        expect(questionRepositoryStub.items[0]).toMatchObject({
             title: 'Any Title',
             content: 'Any Content'
         })
+        expect(saveSpy).toHaveBeenCalledWith(expect.any(Question))
     })
 
     it('should avoid edit a question from another user', async () => {

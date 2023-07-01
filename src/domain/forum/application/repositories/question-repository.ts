@@ -5,13 +5,5 @@ export interface QuestionRepository {
     create: (question: Question) => Promise<void>
     getBySlug: (slug: string) => Promise<Question | null>
     delete: (questionId: string) => Promise<void>
-    edit: (params: QuestionRepository.Edit) => Promise<void>
-}
-
-export namespace QuestionRepository {
-    export type Edit = {
-        questionId: string
-        title: string
-        content: string
-    }
+    save: (question: Question) => Promise<void>
 }

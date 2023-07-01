@@ -23,6 +23,8 @@ export class EditAnswerService {
             throw new Error('Not Allowed')
         }
 
-        await this.answerRepository.edit({ answerId, content })
+        answer.content = content
+
+        await this.answerRepository.save(answer)
     }
 }
