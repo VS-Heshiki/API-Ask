@@ -1,7 +1,6 @@
 import { BestAnswerOfQuestionService } from '@/domain/forum/application/services'
 import { AnswerRepositoryStub, QuestionRepositoryStub, createAnswer, createQuestion } from '@/tests/mock'
 import { Answer, Question } from '@/domain/forum/enterprise/entities'
-import { UniqueEntityId } from '@/core/entities'
 
 describe('BestAnswerOfQuestion Service', () => {
     let sut: BestAnswerOfQuestionService

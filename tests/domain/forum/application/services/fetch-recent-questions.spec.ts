@@ -1,4 +1,3 @@
-import { UniqueEntityId } from '@/core/entities'
 import { FetchRecentQuestionsService } from '@/domain/forum/application/services'
 import { QuestionRepositoryStub, createQuestion } from '@/tests/mock'
 
@@ -21,5 +20,15 @@ describe('FetchRecentQuestions Service', () => {
         expect(questionRepositoryStub.items[0].createdAt).toEqual(new Date(2022, 2, 19))
         expect(questionRepositoryStub.items[1].createdAt).toEqual(new Date(2022, 2, 12))
         expect(questionRepositoryStub.items[2].createdAt).toEqual(new Date(2022, 2, 8))
+    })
+
+    it('should fetch 20 questions per page', async () => {
+        for (let i = 1;i <= 25;i++) {
+            await questionRepositoryStub.create(createQuestion())
+        }
+
+        const { questions } = await sut.execute({ page: 2 })
+
+        expect(questions).toHaveLength(5)
     })
 })
