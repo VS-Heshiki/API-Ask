@@ -14,7 +14,7 @@ export class FetchRecentQuestionsService {
     constructor (private readonly questionRepository: QuestionRepository) { }
 
     async execute ({ page }: FetchRecentQuestionsInput): Promise<FetchRecentQuestionsOutput> {
-        const questions = await this.questionRepository.findMany({ page })
+        const questions = await this.questionRepository.findManyRecent({ page })
 
         return { questions }
     }

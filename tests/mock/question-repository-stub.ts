@@ -9,14 +9,10 @@ export class QuestionRepositoryStub implements QuestionRepository {
     async findById (questionId: string): Promise<Question | null> {
         const answer = this.items.find(item => item.id.toString === questionId)
 
-        if (!answer) {
-            return null
-        }
-
-        return answer
+        return answer ? answer : null
     }
 
-    async findMany ({ page }: PaginationParams): Promise<Question[]> {
+    async findManyRecent ({ page }: PaginationParams): Promise<Question[]> {
         const questions = this.items
             .sort((a, b) => {
                 return b.createdAt.getTime() - a.createdAt.getTime()
