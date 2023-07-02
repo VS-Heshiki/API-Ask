@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { UniqueEntityId } from '@/core/entities'
+import { PaginationParams } from '@/core/repositories'
 import { QuestionRepository } from '@/domain/forum/application/repositories'
 import { Question } from '@/domain/forum/enterprise/entities'
 
@@ -15,6 +15,17 @@ export class QuestionRepositoryStub implements QuestionRepository {
 
         return answer
     }
+
+    async findMany ({ page }: PaginationParams): Promise<Question[]> {
+        const questions = this.items
+            .sort((a, b) => {
+                return b.createdAt.getTime() - a.createdAt.getTime()
+            })
+            .slice((page - 1) * 20, page * 20)
+
+        return questions
+    }
+
 
     async create (question: Question): Promise<void> {
         this.items.push(question)

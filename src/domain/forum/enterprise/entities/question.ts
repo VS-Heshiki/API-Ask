@@ -46,6 +46,10 @@ export class Question extends Entity<QuestionInput> {
             .concat('...')
     }
 
+    get createdAt () {
+        return this.params.createdAt
+    }
+
     private refresh () {
         this.params.updatedAt = new Date()
     }
@@ -54,7 +58,7 @@ export class Question extends Entity<QuestionInput> {
         const question = new Question({
             ...params,
             slug: params.slug ?? Slug.createFromText(params.title),
-            createdAt: new Date()
+            createdAt: params.createdAt ?? new Date()
         }, id)
 
         return question
