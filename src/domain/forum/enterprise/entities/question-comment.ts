@@ -1,26 +1,10 @@
-import { Entity, UniqueEntityId } from '@/core/entities'
+import { Comment, CommentInput } from '@/domain/forum/enterprise/entities'
+import { UniqueEntityId } from '@/core/entities'
 import { Optional } from '@/core/types'
 
-export class QuestionComment extends Entity<QuestionCommentInput>{
-    get authorId () {
-        return this.params.authorId
-    }
-
+export class QuestionComment extends Comment<QuestionCommentInput>{
     get questionId () {
         return this.params.questionId
-    }
-
-    get content () {
-        return this.params.content
-    }
-
-    set content (content: string) {
-        this.params.content = content
-        this.refresh()
-    }
-
-    private refresh () {
-        this.params.updatedAt = new Date()
     }
 
     static create (params: Optional<QuestionCommentInput, 'createdAt'>, id?: UniqueEntityId): QuestionComment {
@@ -33,10 +17,6 @@ export class QuestionComment extends Entity<QuestionCommentInput>{
     }
 }
 
-export type QuestionCommentInput = {
-    authorId: UniqueEntityId
+export interface QuestionCommentInput extends CommentInput {
     questionId: UniqueEntityId
-    content: string
-    createdAt: Date
-    updatedAt?: Date
 }
