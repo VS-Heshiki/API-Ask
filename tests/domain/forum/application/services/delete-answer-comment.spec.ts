@@ -27,4 +27,13 @@ describe('DeleteAnswerComment Service', () => {
         expect(answerCommentRepositoryStub.items).toHaveLength(0)
         expect(deleteSpy).toHaveBeenCalledWith(newAnswerComment)
     })
+
+    it('should avoid delete a comment from another user', async () => {
+        await expect(
+            sut.execute({
+                authorId: 'author-2',
+                commentId: 'comment-1'
+            })
+        ).rejects.toBeInstanceOf(Error)
+    })
 })
