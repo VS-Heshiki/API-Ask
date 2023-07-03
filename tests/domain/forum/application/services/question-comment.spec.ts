@@ -1,7 +1,6 @@
 import { UniqueEntityId } from '@/core/entities'
 import { CommentOnQuestionService } from '@/domain/forum/application/services'
-import { Question } from '@/domain/forum/enterprise/entities'
-import { QuestionCommentRepositoryStub, QuestionRepositoryStub } from '@/tests/mock'
+import { QuestionCommentRepositoryStub, QuestionRepositoryStub, createQuestion } from '@/tests/mock'
 
 describe('QuestionComment Service', () => {
     let sut: CommentOnQuestionService
@@ -14,11 +13,7 @@ describe('QuestionComment Service', () => {
         questionCommentRepositoryMock = new QuestionCommentRepositoryStub()
 
         questionRepositoryMock.create(
-            Question.create({
-                authorId: new UniqueEntityId('authorId-1'),
-                title: 'Any Title',
-                content: 'new question comment'
-            }, new UniqueEntityId('1'))
+            createQuestion({}, new UniqueEntityId('1'))
         )
 
         sut = new CommentOnQuestionService(questionRepositoryMock, questionCommentRepositoryMock)
