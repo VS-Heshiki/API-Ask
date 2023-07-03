@@ -1,6 +1,7 @@
 export * from './createQuestion'
 export * from './createQuestionComment'
 export * from './createAnswer'
+export * from './createAnswerComment'
 export * from './answer-repository-stub'
 export * from './question-repository-stub'
 export * from './question-comment-repository-stub'
