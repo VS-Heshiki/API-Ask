@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories'
 import { QuestionCommentRepository } from '@/domain/forum/application/repositories'
 import { QuestionComment } from '@/domain/forum/enterprise/entities'
 
@@ -18,5 +19,13 @@ export class QuestionCommentRepositoryStub implements QuestionCommentRepository 
         const commentIndex = this.items.findIndex(item => item.id === questionComment.id)
 
         this.items.splice(commentIndex, 1)
+    }
+
+    async findManyComments (questionId: string, { page }: PaginationParams): Promise<QuestionComment[]> {
+        const comments = this.items
+            .filter(item => item.questionId.toString === questionId)
+            .splice((page - 1) * 20, page * 20)
+
+        return comments
     }
 }
