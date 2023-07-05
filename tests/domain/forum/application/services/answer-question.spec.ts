@@ -1,5 +1,5 @@
-import { AnswerRepository } from '@/domain/forum/application/repositories'
 import { AnswerQuestionService } from '@/domain/forum/application/services'
+import { AnswerRepository } from '@/domain/forum/application/repositories'
 
 import { MockProxy, mock } from 'vitest-mock-extended'
 
@@ -13,13 +13,13 @@ describe('AnswerQuestion Service', () => {
     })
 
     it('should create an answer', async () => {
-        const { answer } = await sut.execute({
+        const result = await sut.execute({
             instructorId: '1',
             questionId: '1',
             content: 'new answer'
         })
 
-        expect(answer.id).toBeTruthy()
-        expect(answer.content).toBe('new answer')
+        expect(result.isRight()).toBeTruthy()
+        expect(result.value?.answer.content).toBe('new answer')
     })
 })

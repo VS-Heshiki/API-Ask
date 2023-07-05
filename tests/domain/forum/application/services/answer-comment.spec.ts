@@ -1,5 +1,5 @@
-import { UniqueEntityId } from '@/core/entities'
 import { CommentOnAnswerService } from '@/domain/forum/application/services'
+import { UniqueEntityId } from '@/core/entities'
 import { AnswerCommentRepositoryStub, AnswerRepositoryStub, createAnswer } from '@/tests/mock'
 
 describe('AnswerComment Service', () => {
@@ -20,13 +20,13 @@ describe('AnswerComment Service', () => {
     })
 
     it('should create comment in a answer', async () => {
-        const { answerComment } = await sut.execute({
+        const result = await sut.execute({
             authorId: '1',
             answerId: new UniqueEntityId('1').toString,
             content: 'new answer comment'
         })
 
-        expect(answerComment.id).toBeTruthy()
+        expect(result.isRight()).toBeTruthy()
         expect(answerCommentRepositoryMock.items[0].content).toBe('new answer comment')
     })
 })

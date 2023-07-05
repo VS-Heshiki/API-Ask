@@ -20,13 +20,13 @@ describe('QuestionComment Service', () => {
     })
 
     it('should create comment in a question', async () => {
-        const { questionComment } = await sut.execute({
+        const result = await sut.execute({
             authorId: '1',
             questionId: new UniqueEntityId('1').toString,
             content: 'new question comment'
         })
 
-        expect(questionComment.id).toBeTruthy()
+        expect(result.isRight()).toBeTruthy()
         expect(questionCommentRepositoryMock.items[0].content).toBe('new question comment')
     })
 })

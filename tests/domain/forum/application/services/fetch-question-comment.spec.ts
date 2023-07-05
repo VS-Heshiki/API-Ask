@@ -1,5 +1,5 @@
-import { UniqueEntityId } from '@/core/entities'
 import { FetchQuestionCommentService } from '@/domain/forum/application/services'
+import { UniqueEntityId } from '@/core/entities'
 import { QuestionCommentRepositoryStub, createQuestionComment } from '@/tests/mock'
 
 describe('FetchQuestionComment Service', () => {
@@ -16,8 +16,9 @@ describe('FetchQuestionComment Service', () => {
             await questionCommentRepositoryStub.create(createQuestionComment({ questionId: new UniqueEntityId('question-1') }))
         }
 
-        const { comments } = await sut.execute({ questionId: 'question-1', page: 2 })
+        const result = await sut.execute({ questionId: 'question-1', page: 2 })
 
-        expect(comments).toHaveLength(5)
+        expect(result.isRight()).toBeTruthy()
+        expect(result.value?.comments).toHaveLength(5)
     })
 })

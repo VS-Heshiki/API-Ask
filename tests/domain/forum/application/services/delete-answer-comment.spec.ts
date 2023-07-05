@@ -1,7 +1,8 @@
 import { DeleteCommentOnAnswerService } from '@/domain/forum/application/services'
+import { AnswerComment } from '@/domain/forum/enterprise/entities'
+import { NotAllowedError } from '@/domain/forum/application/services/errors'
 import { UniqueEntityId } from '@/core/entities'
 import { AnswerCommentRepositoryStub, createAnswerComment } from '@/tests/mock'
-import { AnswerComment } from '@/domain/forum/enterprise/entities'
 
 describe('DeleteAnswerComment Service', () => {
     let sut: DeleteCommentOnAnswerService
@@ -29,11 +30,12 @@ describe('DeleteAnswerComment Service', () => {
     })
 
     it('should avoid delete a comment from another user', async () => {
-        await expect(
-            sut.execute({
-                authorId: 'author-2',
-                commentId: 'comment-1'
-            })
-        ).rejects.toBeInstanceOf(Error)
+        const result = await sut.execute({
+            authorId: 'author-2',
+            commentId: 'comment-1'
+        })
+
+        expect(result.isLeft()).toBeTruthy()
+        expect(result.value).toBeInstanceOf(NotAllowedError)
     })
 })

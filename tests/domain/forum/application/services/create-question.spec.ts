@@ -13,13 +13,13 @@ describe('CreateQuestion Service', () => {
     })
 
     it('should create an Question', async () => {
-        const { question } = await sut.execute({
+        const result = await sut.execute({
             authorId: '1',
             title: '1',
             content: 'new Create'
         })
 
-        expect(question.id).toBeTruthy()
-        expect(question.content).toBe('new Create')
+        expect(result.isRight()).toBeTruthy()
+        expect(result.value?.question.content).toBe('new Create')
     })
 })

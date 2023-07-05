@@ -1,5 +1,6 @@
-import { UniqueEntityId } from '@/core/entities'
 import { DeleteAnswerService } from '@/domain/forum/application/services'
+import { NotAllowedError } from '@/domain/forum/application/services/errors'
+import { UniqueEntityId } from '@/core/entities'
 import { AnswerRepositoryStub, createAnswer } from '@/tests/mock'
 
 
@@ -28,11 +29,12 @@ describe('DeleteAnswer Service', () => {
     })
 
     it('should avoid delete a answer from another user', async () => {
-        await expect(
-            sut.execute({
-                authorId: 'author-2',
-                answerId: 'answer-1'
-            })
-        ).rejects.toBeInstanceOf(Error)
+        const result = await sut.execute({
+            authorId: 'author-2',
+            answerId: 'answer-1'
+        })
+
+        expect(result.isLeft()).toBeTruthy()
+        expect(result.value).toBeInstanceOf(NotAllowedError)
     })
 })

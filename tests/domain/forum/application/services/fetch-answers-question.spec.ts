@@ -16,8 +16,9 @@ describe('FetchAnswersQuestion Service', () => {
             await answerRepositoryStub.create(createAnswer({ questionId: new UniqueEntityId('question-1') }))
         }
 
-        const { answers } = await sut.execute({ questionId: 'question-1', page: 2 })
+        const result = await sut.execute({ questionId: 'question-1', page: 2 })
 
-        expect(answers).toHaveLength(5)
+        expect(result.isRight()).toBeTruthy()
+        expect(result.value?.answers).toHaveLength(5)
     })
 })

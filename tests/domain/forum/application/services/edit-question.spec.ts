@@ -1,7 +1,8 @@
 import { EditQuestionService } from '@/domain/forum/application/services'
+import { Question } from '@/domain/forum/enterprise/entities'
+import { NotAllowedError } from '@/domain/forum/application/services/errors'
 import { UniqueEntityId } from '@/core/entities'
 import { QuestionRepositoryStub, createQuestion } from '@/tests/mock'
-import { Question } from '@/domain/forum/enterprise/entities'
 
 describe('EditQuestion Service', () => {
     let sut: EditQuestionService
@@ -33,13 +34,14 @@ describe('EditQuestion Service', () => {
     })
 
     it('should avoid edit a question from another user', async () => {
-        await expect(
-            sut.execute({
-                authorId: 'author-2',
-                questionId: 'question-1',
-                title: 'Any Title',
-                content: 'Any Content'
-            })
-        ).rejects.toBeInstanceOf(Error)
+        const result = await sut.execute({
+            authorId: 'author-2',
+            questionId: 'question-1',
+            title: 'Any Title',
+            content: 'Any Content'
+        })
+
+        expect(result.isLeft).toBeTruthy()
+        expect(result.value).toBeInstanceOf(NotAllowedError)
     })
 })

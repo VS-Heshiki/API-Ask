@@ -19,11 +19,11 @@ describe('GetQuestionBySlug Service', () => {
     })
 
     it('should find a question by slug', async () => {
-        const { question } = await sut.execute({
+        const result = await sut.execute({
             slug: 'example-slug'
         })
 
-        expect(question.id).toBeTruthy()
-        expect(question.content).toBe(newQuestion.content)
+        expect(result.isRight()).toBeTruthy()
+        expect(result.value.question?.title).toBe(newQuestion.title)
     })
 })

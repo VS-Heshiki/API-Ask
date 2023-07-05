@@ -1,5 +1,6 @@
 import { EditAnswerService } from '@/domain/forum/application/services'
 import { Answer } from '@/domain/forum/enterprise/entities'
+import { NotAllowedError } from '@/domain/forum/application/services/errors'
 import { UniqueEntityId } from '@/core/entities'
 import { AnswerRepositoryStub, createAnswer } from '@/tests/mock'
 
@@ -31,12 +32,13 @@ describe('EditAnswer Service', () => {
     })
 
     it('should avoid edit a answer from another user', async () => {
-        await expect(
-            sut.execute({
-                authorId: 'author-2',
-                answerId: 'answer-1',
-                content: 'Any Content'
-            })
-        ).rejects.toBeInstanceOf(Error)
+        const result = await sut.execute({
+            authorId: 'author-2',
+            answerId: 'answer-1',
+            content: 'Any Content'
+        })
+
+        expect(result.isLeft).toBeTruthy()
+        expect(result.value).toBeInstanceOf(NotAllowedError)
     })
 })

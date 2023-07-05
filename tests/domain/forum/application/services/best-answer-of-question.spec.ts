@@ -1,6 +1,7 @@
 import { BestAnswerOfQuestionService } from '@/domain/forum/application/services'
 import { AnswerRepositoryStub, QuestionRepositoryStub, createAnswer, createQuestion } from '@/tests/mock'
 import { Answer, Question } from '@/domain/forum/enterprise/entities'
+import { NotAllowedError } from '@/domain/forum/application/services/errors'
 
 describe('BestAnswerOfQuestion Service', () => {
     let sut: BestAnswerOfQuestionService
@@ -33,11 +34,12 @@ describe('BestAnswerOfQuestion Service', () => {
     })
 
     it('should avoid set an answer from another user', async () => {
-        await expect(
-            sut.execute({
-                authorId: 'invalid-author',
-                answerId: newAnswer.id.toString
-            })
-        ).rejects.toBeInstanceOf(Error)
+        const result = await sut.execute({
+            authorId: 'invalid-author',
+            answerId: newAnswer.id.toString
+        })
+
+        expect(result.isLeft()).toBeTruthy()
+        expect(result.value).toBeInstanceOf(NotAllowedError)
     })
 })

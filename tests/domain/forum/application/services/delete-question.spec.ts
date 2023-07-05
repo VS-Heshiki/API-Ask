@@ -1,7 +1,7 @@
 import { DeleteQuestionService } from '@/domain/forum/application/services'
+import { NotAllowedError } from '@/domain/forum/application/services/errors'
 import { UniqueEntityId } from '@/core/entities'
-import { createQuestion } from '@/tests/mock'
-import { QuestionRepositoryStub } from '@/tests/mock'
+import { QuestionRepositoryStub, createQuestion } from '@/tests/mock'
 
 describe('DeleteQuestion Service', () => {
     let sut: DeleteQuestionService
@@ -28,11 +28,12 @@ describe('DeleteQuestion Service', () => {
     })
 
     it('should avoid delete a question from another user', async () => {
-        await expect(
-            sut.execute({
-                authorId: 'author-2',
-                questionId: 'question-1'
-            })
-        ).rejects.toBeInstanceOf(Error)
+        const result = await sut.execute({
+            authorId: 'author-2',
+            questionId: 'question-1'
+        })
+
+        expect(result.isLeft).toBeTruthy()
+        expect(result.value).toBeInstanceOf(NotAllowedError)
     })
 })

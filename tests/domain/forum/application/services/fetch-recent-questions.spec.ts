@@ -27,8 +27,9 @@ describe('FetchRecentQuestions Service', () => {
             await questionRepositoryStub.create(createQuestion())
         }
 
-        const { questions } = await sut.execute({ page: 2 })
+        const result = await sut.execute({ page: 2 })
 
-        expect(questions).toHaveLength(5)
+        expect(result.isRight()).toBeTruthy()
+        expect(result.value?.questions).toHaveLength(5)
     })
 })
