@@ -1,11 +1,13 @@
 import { QuestionRepository } from '@/domain/forum/application/repositories'
+import { NotAllowedError, ResourceNotFoundError } from '@/domain/forum/application/services/errors'
+import { Either, left, right } from '@/core/types'
 
 type DeleteQuestionInput = {
     authorId: string
     questionId: string
 }
 
-type DeleteQuestionOutput = void
+type DeleteQuestionOutput = Either<ResourceNotFoundError | NotAllowedError, object>
 
 export class DeleteQuestionService {
 
@@ -15,13 +17,14 @@ export class DeleteQuestionService {
         const question = await this.questionRepository.findById(questionId)
 
         if (!question) {
-            throw new Error('Question not Found')
+            return left(new ResourceNotFoundError())
         }
 
         if (question.authorId.toString !== authorId) {
-            throw new Error('Not Allowed')
+            return left(new NotAllowedError())
         }
 
         await this.questionRepository.delete(questionId)
+        return right({})
     }
 }

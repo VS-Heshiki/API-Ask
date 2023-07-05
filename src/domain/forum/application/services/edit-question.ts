@@ -1,4 +1,6 @@
 import { QuestionRepository } from '@/domain/forum/application/repositories'
+import { NotAllowedError, ResourceNotFoundError } from '@/domain/forum/application/services/errors'
+import { Either, left, right } from '@/core/types'
 
 type EditQuestionInput = {
     authorId: string
@@ -7,7 +9,7 @@ type EditQuestionInput = {
     content: string
 }
 
-type EditQuestionOutput = void
+type EditQuestionOutput = Either<ResourceNotFoundError | NotAllowedError, object>
 
 export class EditQuestionService {
 
@@ -17,16 +19,16 @@ export class EditQuestionService {
         const question = await this.questionRepository.findById(questionId)
 
         if (!question) {
-            throw new Error('Question not Found')
+            return left(new ResourceNotFoundError())
         }
 
         if (question.authorId.toString !== authorId) {
-            throw new Error('Not Allowed')
+            return left(new NotAllowedError())
         }
 
         question.title = title
         question.content = content
-
         await this.questionRepository.save(question)
+        return right({})
     }
 }

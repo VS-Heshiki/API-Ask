@@ -1,13 +1,12 @@
-import { QuestionRepository } from '@/domain/forum/application/repositories'
 import { Question } from '@/domain/forum/enterprise/entities'
+import { QuestionRepository } from '@/domain/forum/application/repositories'
+import { Either, right } from '@/core/types'
 
 type FetchRecentQuestionsInput = {
     page: number
 }
 
-type FetchRecentQuestionsOutput = {
-    questions: Question[]
-}
+type FetchRecentQuestionsOutput = Either<void, { questions: Question[] }>
 
 export class FetchRecentQuestionsService {
 
@@ -16,6 +15,6 @@ export class FetchRecentQuestionsService {
     async execute ({ page }: FetchRecentQuestionsInput): Promise<FetchRecentQuestionsOutput> {
         const questions = await this.questionRepository.findManyRecent({ page })
 
-        return { questions }
+        return right({ questions })
     }
 }

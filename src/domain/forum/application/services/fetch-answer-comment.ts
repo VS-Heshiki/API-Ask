@@ -1,14 +1,13 @@
-import { AnswerCommentRepository } from '@/domain/forum/application/repositories'
 import { AnswerComment } from '@/domain/forum/enterprise/entities'
+import { AnswerCommentRepository } from '@/domain/forum/application/repositories'
+import { Either, right } from '@/core/types'
 
 type FetchAnswerCommentInput = {
     answerId: string
     page: number
 }
 
-type FetchAnswerCommentOutput = {
-    comments: AnswerComment[]
-}
+type FetchAnswerCommentOutput = Either<void, { comments: AnswerComment[] }>
 
 export class FetchAnswerCommentService {
 
@@ -17,6 +16,6 @@ export class FetchAnswerCommentService {
     async execute ({ answerId, page }: FetchAnswerCommentInput): Promise<FetchAnswerCommentOutput> {
         const comments = await this.answerCommentRepository.findManyComments(answerId, { page })
 
-        return { comments }
+        return right({ comments })
     }
 }

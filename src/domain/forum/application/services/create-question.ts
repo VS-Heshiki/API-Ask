@@ -1,6 +1,7 @@
-import { QuestionRepository } from '@/domain/forum/application/repositories'
 import { Question } from '@/domain/forum/enterprise/entities'
+import { QuestionRepository } from '@/domain/forum/application/repositories'
 import { UniqueEntityId } from '@/core/entities'
+import { Either, right } from '@/core/types'
 
 type CreateQuestionInput = {
     authorId: string
@@ -8,9 +9,7 @@ type CreateQuestionInput = {
     content: string
 }
 
-type CreateQuestionOutput = {
-    question: Question
-}
+type CreateQuestionOutput = Either<null, { question: Question }>
 
 export class CreateQuestionService {
 
@@ -25,6 +24,6 @@ export class CreateQuestionService {
 
         await this.questionRepository.create(question)
 
-        return { question }
+        return right({ question })
     }
 }

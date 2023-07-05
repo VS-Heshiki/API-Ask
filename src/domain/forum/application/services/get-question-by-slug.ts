@@ -1,13 +1,13 @@
-import { QuestionRepository } from '@/domain/forum/application/repositories'
 import { Question } from '@/domain/forum/enterprise/entities'
+import { QuestionRepository } from '@/domain/forum/application/repositories'
+import { ResourceNotFoundError } from '@/domain/forum/application/services/errors'
+import { Either, left, right } from '@/core/types'
 
 type GetQuestionBySlugInput = {
     slug: string
 }
 
-type GetQuestionBySlugOutput = {
-    question: Question
-}
+type GetQuestionBySlugOutput = Either<ResourceNotFoundError, { question: Question }>
 
 export class GetQuestionBySlugService {
 
@@ -17,9 +17,9 @@ export class GetQuestionBySlugService {
         const question = await this.questionRepository.getBySlug(slug)
 
         if (!question) {
-            throw new Error('Question not Found')
+            return left(new ResourceNotFoundError())
         }
 
-        return { question }
+        return right({ question })
     }
 }

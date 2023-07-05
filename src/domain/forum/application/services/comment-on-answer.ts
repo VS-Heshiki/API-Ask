@@ -1,6 +1,9 @@
-import { AnswerCommentRepository, AnswerRepository } from '@/domain/forum/application/repositories'
 import { AnswerComment } from '@/domain/forum/enterprise/entities'
+import { AnswerCommentRepository, AnswerRepository } from '@/domain/forum/application/repositories'
+import { ResourceNotFoundError } from '@/domain/forum/application/services/errors'
 import { UniqueEntityId } from '@/core/entities'
+import { Either, left, right } from '@/core/types'
+
 
 type CommentOnAnswerInput = {
     authorId: string
@@ -8,9 +11,7 @@ type CommentOnAnswerInput = {
     content: string
 }
 
-type CommentOnAnswerOutput = {
-    answerComment: AnswerComment
-}
+type CommentOnAnswerOutput = Either<ResourceNotFoundError, { answerComment: AnswerComment }>
 
 export class CommentOnAnswerService {
 
@@ -23,7 +24,7 @@ export class CommentOnAnswerService {
         const answer = await this.answerRepository.findById(answerId)
 
         if (!answer) {
-            throw new Error('Answer not found!')
+            return left(new ResourceNotFoundError())
         }
 
         const answerComment = AnswerComment.create({
@@ -34,6 +35,6 @@ export class CommentOnAnswerService {
 
         await this.answerCommentRepository.create(answerComment)
 
-        return { answerComment }
+        return right({ answerComment })
     }
 }

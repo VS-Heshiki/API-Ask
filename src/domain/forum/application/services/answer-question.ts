@@ -1,6 +1,7 @@
 import { AnswerRepository } from '@/domain/forum/application/repositories'
 import { Answer } from '@/domain/forum/enterprise/entities'
 import { UniqueEntityId } from '@/core/entities'
+import { Either, right } from '@/core/types'
 
 type AnswerQuestionInput = {
     instructorId: string
@@ -8,9 +9,7 @@ type AnswerQuestionInput = {
     content: string
 }
 
-type AnswerQuestionOutput = {
-    answer: Answer
-}
+type AnswerQuestionOutput = Either<null, { answer: Answer }>
 
 export class AnswerQuestionService {
 
@@ -25,6 +24,6 @@ export class AnswerQuestionService {
 
         await this.answerRepository.create(answer)
 
-        return { answer }
+        return right({ answer })
     }
 }

@@ -1,4 +1,6 @@
 import { AnswerRepository } from '@/domain/forum/application/repositories'
+import { NotAllowedError, ResourceNotFoundError } from '@/domain/forum/application/services/errors'
+import { Either, left, right } from '@/core/types'
 
 type EditAnswerInput = {
     authorId: string
@@ -6,7 +8,7 @@ type EditAnswerInput = {
     content: string
 }
 
-type EditAnswerOutput = void
+type EditAnswerOutput = Either<ResourceNotFoundError | NotAllowedError, object>
 
 export class EditAnswerService {
 
@@ -16,15 +18,15 @@ export class EditAnswerService {
         const answer = await this.answerRepository.findById(answerId)
 
         if (!answer) {
-            throw new Error('Answer not Found')
+            return left(new ResourceNotFoundError())
         }
 
         if (answer.authorId.toString !== authorId) {
-            throw new Error('Not Allowed')
+            return left(new NotAllowedError())
         }
 
         answer.content = content
-
         await this.answerRepository.save(answer)
+        return right({})
     }
 }

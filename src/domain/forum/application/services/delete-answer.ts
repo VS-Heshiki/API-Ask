@@ -1,11 +1,13 @@
 import { AnswerRepository } from '@/domain/forum/application/repositories'
+import { NotAllowedError, ResourceNotFoundError } from '@/domain/forum/application/services/errors'
+import { Either, left, right } from '@/core/types'
 
 type DeleteAnswerInput = {
     authorId: string
     answerId: string
 }
 
-type DeleteAnswerOutput = void
+type DeleteAnswerOutput = Either<ResourceNotFoundError | NotAllowedError, object>
 
 export class DeleteAnswerService {
 
@@ -15,13 +17,14 @@ export class DeleteAnswerService {
         const answer = await this.answerRepository.findById(answerId)
 
         if (!answer) {
-            throw new Error('Answer not Found')
+            return left(new ResourceNotFoundError())
         }
 
         if (authorId !== answer.authorId.toString) {
-            throw new Error('Not Allowed')
+            return left(new NotAllowedError())
         }
 
         await this.answerRepository.delete(answerId)
+        return right({})
     }
 }

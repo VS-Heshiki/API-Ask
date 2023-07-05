@@ -1,11 +1,13 @@
 import { QuestionCommentRepository } from '@/domain/forum/application/repositories'
+import { NotAllowedError, ResourceNotFoundError } from '@/domain/forum/application/services/errors'
+import { Either, left, right } from '@/core/types'
 
 type DeleteCommentOnQuestionInput = {
     authorId: string
     commentId: string
 }
 
-type DeleteCommentOnQuestionOutput = void
+type DeleteCommentOnQuestionOutput = Either<ResourceNotFoundError | NotAllowedError, object>
 
 export class DeleteCommentOnQuestionService {
 
@@ -17,13 +19,14 @@ export class DeleteCommentOnQuestionService {
         const comment = await this.questionCommentRepository.findById(commentId)
 
         if (!comment) {
-            throw new Error('Comment not found!')
+            return left(new ResourceNotFoundError())
         }
 
         if (authorId !== comment.authorId.toString) {
-            throw new Error('Not Allowed')
+            return left(new NotAllowedError())
         }
 
         await this.questionCommentRepository.delete(comment)
+        return right({})
     }
 }
