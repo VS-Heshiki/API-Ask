@@ -1,7 +1,7 @@
+import { QuestionAttachmentList } from '@/domain/forum/enterprise/entities/question-attachment-list'
+import { Slug } from '@/domain/forum/enterprise/entities/value-objects'
 import { AggregateRoot, UniqueEntityId } from '@/core/entities'
 import { Optional } from '@/core/types'
-import { QuestionAttachment } from '@/domain/forum/enterprise/entities'
-import { Slug } from '@/domain/forum/enterprise/entities/value-objects'
 
 export class Question extends AggregateRoot<QuestionInput> {
     get authorId () {
@@ -51,7 +51,7 @@ export class Question extends AggregateRoot<QuestionInput> {
         return this.params.attachment
     }
 
-    set attachment (attachment: QuestionAttachment[]) {
+    set attachment (attachment: QuestionAttachmentList) {
         this.params.attachment = attachment
     }
 
@@ -68,7 +68,7 @@ export class Question extends AggregateRoot<QuestionInput> {
             ...params,
             slug: params.slug ?? Slug.createFromText(params.title),
             createdAt: params.createdAt ?? new Date(),
-            attachment: params.attachment ?? []
+            attachment: params.attachment ?? new QuestionAttachmentList()
         }, id)
 
         return question
@@ -81,7 +81,7 @@ export type QuestionInput = {
     title: string
     content: string
     slug: Slug
-    attachment: QuestionAttachment[]
+    attachment: QuestionAttachmentList
     createdAt: Date
     updatedAt?: Date
 }

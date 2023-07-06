@@ -1,5 +1,6 @@
 import { Question, QuestionAttachment } from '@/domain/forum/enterprise/entities'
 import { QuestionRepository } from '@/domain/forum/application/repositories'
+import { QuestionAttachmentList } from '@/domain/forum/enterprise/entities/question-attachment-list'
 import { UniqueEntityId } from '@/core/entities'
 import { Either, right } from '@/core/types'
 
@@ -30,7 +31,7 @@ export class CreateQuestionService {
             })
         })
 
-        question.attachment = questionAttachments
+        question.attachment = new QuestionAttachmentList(questionAttachments)
 
         await this.questionRepository.create(question)
 

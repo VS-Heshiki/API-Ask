@@ -23,8 +23,8 @@ describe('CreateQuestion Service', () => {
 
         expect(result.isRight()).toBeTruthy()
         expect(result.value?.question.content).toBe('new Create')
-        expect(result.value?.question.attachment).toHaveLength(2)
-        expect(result.value?.question.attachment).toEqual([
+        expect(result.value?.question.attachment.currentItems).toHaveLength(2)
+        expect(result.value?.question.attachment.currentItems).toEqual([
             expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
             expect.objectContaining({ attachmentId: new UniqueEntityId('2') })
         ])
