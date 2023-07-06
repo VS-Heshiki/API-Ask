@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { PaginationParams } from '@/core/repositories'
-import { QuestionRepository } from '@/domain/forum/application/repositories'
+import { QuestionAttachmentRepository, QuestionRepository } from '@/domain/forum/application/repositories'
 import { Question } from '@/domain/forum/enterprise/entities'
 
 export class QuestionRepositoryStub implements QuestionRepository {
     public items: Question[] = []
+
+    constructor (private readonly questionAttachmentRepository: QuestionAttachmentRepository) { }
 
     async findById (questionId: string): Promise<Question | null> {
         const answer = this.items.find(item => item.id.toString === questionId)
@@ -35,6 +37,7 @@ export class QuestionRepositoryStub implements QuestionRepository {
     async delete (questionId: string): Promise<void> {
         const questionIndex = this.items.findIndex(item => item.id.toString === questionId)
 
+        this.questionAttachmentRepository.deleteManyByQuestionId(questionId)
         this.items.splice(questionIndex, 1)
     }
 
