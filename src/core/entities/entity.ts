@@ -1,6 +1,6 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
-export class Entity<Params> {
+export abstract class Entity<Params> {
     private readonly _id: UniqueEntityId
     protected params: Params
 

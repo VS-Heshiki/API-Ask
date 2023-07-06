@@ -1,8 +1,9 @@
-import { Entity, UniqueEntityId } from '@/core/entities'
+import { AggregateRoot, UniqueEntityId } from '@/core/entities'
 import { Optional } from '@/core/types'
+import { QuestionAttachment } from '@/domain/forum/enterprise/entities'
 import { Slug } from '@/domain/forum/enterprise/entities/value-objects'
 
-export class Question extends Entity<QuestionInput> {
+export class Question extends AggregateRoot<QuestionInput> {
     get authorId () {
         return this.params.authorId
     }
@@ -46,6 +47,14 @@ export class Question extends Entity<QuestionInput> {
             .concat('...')
     }
 
+    get attachment () {
+        return this.params.attachment
+    }
+
+    set attachment (attachment: QuestionAttachment[]) {
+        this.params.attachment = attachment
+    }
+
     get createdAt () {
         return this.params.createdAt
     }
@@ -54,11 +63,12 @@ export class Question extends Entity<QuestionInput> {
         this.params.updatedAt = new Date()
     }
 
-    static create (params: Optional<QuestionInput, 'createdAt' | 'slug'>, id?: UniqueEntityId): Question {
+    static create (params: Optional<QuestionInput, 'createdAt' | 'slug' | 'attachment'>, id?: UniqueEntityId): Question {
         const question = new Question({
             ...params,
             slug: params.slug ?? Slug.createFromText(params.title),
-            createdAt: params.createdAt ?? new Date()
+            createdAt: params.createdAt ?? new Date(),
+            attachment: params.attachment ?? []
         }, id)
 
         return question
@@ -71,6 +81,7 @@ export type QuestionInput = {
     title: string
     content: string
     slug: Slug
+    attachment: QuestionAttachment[]
     createdAt: Date
     updatedAt?: Date
 }
